@@ -8,24 +8,26 @@
     },
     "resources": [
         {
-            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/af29db0d-422f-4f6f-a48f-5f490c84a76a')]",
-            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/af29db0d-422f-4f6f-a48f-5f490c84a76a')]",
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/023138dc-737b-47fd-88ca-de89907ec3dc')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/023138dc-737b-47fd-88ca-de89907ec3dc')]",
             "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
             "kind": "Scheduled",
             "apiVersion": "2021-09-01-preview",
             "properties": {
-                "displayName": "Login Rule",
-                "description": "Login Rule",
+                "displayName": "Security Event Custom",
+                "description": "Security Event Custom",
                 "severity": "Medium",
                 "enabled": true,
-                "query": "SecurityEvent\r\n| where EventID == 4688",
-                "queryFrequency": "PT5H",
-                "queryPeriod": "PT5H",
+                "query": "SecurityEvent\r\n| where EventID == 4719",
+                "queryFrequency": "PT5M",
+                "queryPeriod": "PT10M",
                 "triggerOperator": "GreaterThan",
                 "triggerThreshold": 0,
                 "suppressionDuration": "PT5H",
                 "suppressionEnabled": false,
-                "tactics": [],
+                "tactics": [
+                    "Reconnaissance"
+                ],
                 "techniques": [],
                 "alertRuleTemplateName": null,
                 "incidentConfiguration": {
@@ -36,11 +38,12 @@
                         "lookbackDuration": "PT5H",
                         "matchingMethod": "Selected",
                         "groupByEntities": [
-                            "Host"
+                            "Host",
+                            "Account"
                         ],
                         "groupByAlertDetails": [
-                            "Severity",
-                            "DisplayName"
+                            "DisplayName",
+                            "Severity"
                         ],
                         "groupByCustomDetails": []
                     }
@@ -57,6 +60,15 @@
                             {
                                 "identifier": "HostName",
                                 "columnName": "Computer"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Name",
+                                "columnName": "AccountName"
                             }
                         ]
                     }
